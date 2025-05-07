@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createTask, deleteTask, getAllTasks, getUserTasks, updateTask } from "../controller/tasks.controller.js";
+import { createTask, deleteTask, getAllTasks, getComUserTasks, getDefeUserTasks, getDeployedTasks, getInProgUserTasks, getPendUserTasks, getUserTasks, updateTask } from "../controller/tasks.controller.js";
 
 let router = Router();
 
@@ -11,8 +11,16 @@ router.post('/task', createTask);
 router.get('/tasks', getAllTasks);
 
 
-// get all tasks for each user
-router.post('/tasks/:userId', getUserTasks);
+// get all tasks for specific user
+router.get('/tasks/:userId', getUserTasks);
+
+
+// get completed Task for specific user
+router.get('/tasks/:userId/completed', getComUserTasks);
+router.get('/tasks/:userId/pending', getPendUserTasks);
+router.get('/tasks/:userId/inprogress', getInProgUserTasks);
+router.get('/tasks/:userId/deployed', getDeployedTasks);
+router.get('/tasks/:userId/deferred', getDefeUserTasks);
 
 
 // update tasks

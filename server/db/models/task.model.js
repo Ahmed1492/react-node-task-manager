@@ -1,20 +1,20 @@
 import mongoose, { Types } from "mongoose";
 
-const taskSchema = new mongoose.Schema({ 
+const taskSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
   },
-  description: {
+  content: {
     type: String,
     required: true,
   },
-  isCompleted: {
-    type: Boolean,
-    required: true,
-    default: false, // Optionally set a default value to false
+  startDate: {
+    type: Date,
+    required: false,
+    default: Date.now, // Optionally set a default value to false
   },
-  dueDate: {
+  endDate: {
     type: Date, // Make sure the dueDate is a valid Date object
     required: false, // This can be optional depending on your app's needs
   },
@@ -22,6 +22,9 @@ const taskSchema = new mongoose.Schema({
   userId: {
     type: Types.ObjectId,
     ref: 'User'
+  },
+  type: {
+    type: String
   }
 
 }, {
@@ -32,3 +35,4 @@ const taskSchema = new mongoose.Schema({
 const Task = mongoose.model('Task', taskSchema);
 
 export default Task;
+

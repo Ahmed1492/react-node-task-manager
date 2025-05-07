@@ -1,5 +1,8 @@
 import User from "../../db/models/user.model.js";
 import mongoose from "mongoose";
+import bcrypt from 'bcrypt';
+// import { config } from "dotenv";
+// config();
 
 export const getAllUsers = async (req, res, next) => {
   try {
@@ -21,8 +24,12 @@ export const register = async (req, res, next) => {
       return res.status(400).json({ message: "Email already in use" });
     }
 
+    // hash password
+    let hashedPassword = await bcrypt.hash(password, Number(process.env.SECRET_KEY));
+
+
     // Create new user
-    const result = await User.create({ name, age, email, password });
+    const result = await User.create({ name, age, email, password: hashedPassword });
 
     // If the user wasn't created for some reason
     if (!result) {
@@ -51,7 +58,8 @@ export const login = async (req, res, next) => {
       return res.status(400).json({ message: 'invaild email or password!' });
     }
 
-    if (user.password !== password) {
+    const checkPassword = await bcrypt.compare(password, user.password);
+    if (!checkPassword) {
       return res.status(200).json({ message: 'invaild email or password!' });
 
     }

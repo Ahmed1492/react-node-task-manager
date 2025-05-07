@@ -1,10 +1,19 @@
 import React from 'react';
-import ProductManagmentSystem from './productManagmentSystem/ProductManagmentSystem';
+import UserTaskManger from './page/userTaskManger/UserTaskManger';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Test from './components/Test/Test.';
 
 const App = () => {
   return (
     <>
-      <ProductManagmentSystem />
+
+      <div className='w-[80%] m-auto shadow-2xl'>
+        <UserTaskManger />
+        {/* <Routes>
+            <Route path="/test" element={<Test />} />
+          </Routes> */}
+      </div>
+
     </>
   );
 };
