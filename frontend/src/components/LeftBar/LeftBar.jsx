@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const LeftBar = () => {
   return (
-    <div className="px-4 py-3 bg-[#3F51B5] text-white rounded-md min-h-[70vh] ">
+    <div className="px-4 py-3 bg-[#e7543e] text-white rounded-md min-h-[70vh] ">
       <h3 className="text-center mb-[3rem] font-bold text-lg"> Task Manger</h3>
 
       <ul className="ml-8 font-semibold text-sm flex flex-col gap-6">

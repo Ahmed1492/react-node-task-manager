@@ -1,6 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
+import "./TaskCard.scss";
+import { useNavigate } from "react-router-dom";
+import NoTasks from "../NoTasks/NoTasks";
+import axios from "axios";
+const TaskCard = ({ allTasks, setAllTasks }) => {
+  const [isOpenMenue, setIsOpenMenue] = useState({
+    id: "",
+    isOpen: false,
+  });
 
-const TaskCard = ({ allTasks }) => {
+  const [updatedTask, setUpdatedTask] = useState({});
+
+  const navigate = useNavigate();
   const getStatusColor = (task) => {
     try {
       let color;
@@ -40,15 +51,63 @@ const TaskCard = ({ allTasks }) => {
     const day = `0${date.getDate()}`.slice(-2);
     return `${year} - ${month} - ${day}`;
   };
+  const handleOpen = (task) => {
+    if (isOpenMenue.id === task._id && isOpenMenue.isOpen) {
+      // Close the menu if the same task is clicked again
+      setIsOpenMenue({ isOpen: false, id: null });
+    } else {
+      // Open the menu for the clicked task
+      setIsOpenMenue({ isOpen: true, id: task._id });
+    }
+  };
 
+  const handleUpdate = (task) => {
+    navigate("/updateTask", { state: { task } });
+  };
+
+  const handleDelete = async (task) => {
+    try {
+      await axios.delete(`http://localhost:2000/task/${task._id}`);
+      setAllTasks((prev) => prev.filter((t) => t._id !== task._id));
+      setIsOpenMenue({ id: "", isOpen: false });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  if (allTasks?.status == 404) return <NoTasks />;
+  if (!allTasks) return <NoTasks />;
+  if (allTasks.length == 0) return <NoTasks />;
   return (
     <div className="w-full flex flex-wrap justify-between gap-4">
       {allTasks?.map((task, index) => (
         <div
-          onClick={() => console.log(task)}
+          // onClick={() => console.log(task)}
           key={index}
-          className="flex  flex-col gap-4 w-[100%] lg:w-[44%] xl:w-[29%] shadow-2xl  border p-3 rounded-xl "
+          className="flex relative  flex-col gap-4 w-[100%] lg:w-[44%] xl:w-[17rem] shadow-2xl  border p-3 rounded-xl "
         >
+          <img
+            onClick={() => handleOpen(task)}
+            className="editIcone"
+            src="/edit.svg"
+            alt=""
+          />
+          {isOpenMenue.id === task._id && (
+            <div className="menue shadow-2xl rounded-lg bg-white w-[7rem] text-center px-1 py-2">
+              <ul className="flex flex-col ">
+                <li className="border-b pb-2 border-slate-300">
+                  <button onClick={() => handleUpdate(task)}>Edit</button>
+                </li>
+                <li className="mt-2">
+                  <button
+                    onClick={() => handleDelete(task)}
+                    className="text-red-500"
+                  >
+                    Delete
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
           {/* TOP */}
           <div
             className={` ${getStatusColor(task)} 

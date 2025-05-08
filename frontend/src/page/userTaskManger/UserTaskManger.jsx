@@ -9,28 +9,28 @@ import DeployedTasks from "../DeployedTasks/DeployedTasks";
 import InProgressTasks from "../InProgressTasks/InProgressTasks";
 import PendingTasks from "../PendingTasks/PendingTasks";
 import axios from "axios";
+import UpdateTask from "../UpdateTask/UpdateTask";
+import Login from "../Login/Login";
+import Register from "../Register/Register";
 
-const UserTaskManger = () => {
+const UserTaskManger = ({ checkLogin }) => {
   const [allTasks, setAllTasks] = useState([]);
 
-  const link = `http://localhost:2000/tasks/${userId}`;
   const getData = async (url) => {
     try {
       let myResponse = await axios.get(url);
       console.log("response : ", myResponse.data.result);
       setAllTasks(myResponse.data.result);
     } catch (error) {
-      console.log(error.message);
+      setAllTasks(error);
     }
   };
-  useEffect(() => {
-    // getData(link);
-  }, []);
+
   return (
     <div className="flex mt-[4rem] ">
-      <BrowserRouter>
+      <>
         <div className="w-[55%] md:w-[40%] lg:w-[15rem]">
-          <LeftBar />
+          {checkLogin && <LeftBar />}
         </div>
         <div className=" w-[100%] lg:w-[80%] bg-white h-full px-3 mt-7 rounded-lg ">
           <Routes>
@@ -50,8 +50,8 @@ const UserTaskManger = () => {
               element={
                 <CompletedTasks
                   getData={getData}
-                  allTasks={allTasks}
                   setAllTasks={setAllTasks}
+                  allTasks={allTasks}
                 />
               }
             />
@@ -60,8 +60,8 @@ const UserTaskManger = () => {
               element={
                 <DeferredTasks
                   getData={getData}
-                  allTasks={allTasks}
                   setAllTasks={setAllTasks}
+                  allTasks={allTasks}
                 />
               }
             />
@@ -70,8 +70,8 @@ const UserTaskManger = () => {
               element={
                 <DeployedTasks
                   getData={getData}
-                  allTasks={allTasks}
                   setAllTasks={setAllTasks}
+                  allTasks={allTasks}
                 />
               }
             />
@@ -90,14 +90,27 @@ const UserTaskManger = () => {
               element={
                 <PendingTasks
                   getData={getData}
-                  allTasks={allTasks}
                   setAllTasks={setAllTasks}
+                  allTasks={allTasks}
                 />
               }
             />
+            <Route
+              path="/updateTask"
+              element={
+                <UpdateTask
+                  getData={getData}
+                  setAllTasks={setAllTasks}
+                  allTasks={allTasks}
+                />
+              }
+            />
+            {/* <Route path="/register" element={<Register />} /> */}
+            <Route path="*" element={<div>not found</div>} />
+            {/* <Route path="/login" element={<Login />} /> */}
           </Routes>
         </div>
-      </BrowserRouter>
+      </>
     </div>
   );
 };

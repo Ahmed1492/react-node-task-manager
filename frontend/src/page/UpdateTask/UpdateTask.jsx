@@ -1,40 +1,46 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const AddTask = () => {
-  const [task, setTask] = useState({
-    title: "",
-    content: "",
-    type: "",
-    userId: "6819158080f39f9b75d3f7e3",
-    startDate: "",
-    endDate: "",
-  });
-
+const UpdateTask = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [updatedTask, setUpdatedTask] = useState(location.state?.task);
   const collectDate = (e) => {
     try {
       let key = e.target.name;
       let value = e.target.value;
-      let newObj = { ...task };
+      let newObj = { ...updatedTask };
       newObj[key] = value;
-      setTask(newObj);
+      setUpdatedTask(newObj);
       console.log(newObj);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const createNewTask = async () => {
+  const handleUpdate = async () => {
     try {
-      let myResponse = await axios.post("http://localhost:2000/task", task);
-      console.log(myResponse);
+      let myResponse = await axios.patch(
+        `http://localhost:2000/task/${updatedTask._id}`,
+        updatedTask
+      );
+      console.log(myResponse.status);
+      if (myResponse.status === 200) navigate("/");
     } catch (error) {
       console.log(error);
     }
   };
+
+  console.log("====================================");
+  console.log("updatedTask111111111111 ", updatedTask);
+  console.log("====================================");
+  useEffect(() => {
+    if (!updatedTask) return navigate("/");
+  }, []);
   return (
     <div className="py-6 px-4">
-      <h2 className="text-2xl font-semibold text-center mb-6">Add New Task</h2>
+      <h2 className="text-2xl font-semibold text-center mb-6">Update Task</h2>
 
       <div className="flex flex-col gap-4 max-w-xl mx-auto">
         {/* TITLE */}
@@ -42,6 +48,7 @@ const AddTask = () => {
           <label className="block text-sm font-medium mb-1">Title</label>
           <input
             onChange={collectDate}
+            value={updatedTask.title}
             name="title"
             className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
             type="text"
@@ -52,6 +59,7 @@ const AddTask = () => {
         <div>
           <label className="block text-sm font-medium mb-1">Description</label>
           <input
+            value={updatedTask.content}
             onChange={collectDate}
             name="content"
             className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
@@ -64,6 +72,9 @@ const AddTask = () => {
           <div className="flex-1">
             <label className="block text-sm font-medium mb-1">Start Date</label>
             <input
+              value={
+                updatedTask.startDate ? updatedTask.startDate.slice(0, 10) : ""
+              }
               onChange={collectDate}
               name="startDate"
               className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
@@ -75,6 +86,9 @@ const AddTask = () => {
             <label className="block text-sm font-medium mb-1">End Date</label>
             <input
               onChange={collectDate}
+              value={
+                updatedTask.startDate ? updatedTask.endDate.slice(0, 10) : ""
+              }
               name="endDate"
               className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
               type="date"
@@ -85,10 +99,11 @@ const AddTask = () => {
         <div>
           <label className="block text-sm font-medium mb-1">Status</label>
           <select
+            value={updatedTask.type}
             onChange={collectDate}
             name="type"
             className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
-            defaultValue=""
+            // defaultValue=""
           >
             <option value="" disabled>
               Select status
@@ -104,13 +119,14 @@ const AddTask = () => {
         </div>
 
         <button
-          onClick={createNewTask}
-          className="bg-[#FF735C] mt-5 py-2 rounded-lg text-white"
+          onClick={handleUpdate}
+          className="bg-[#3F51B5] mt-5 py-2 rounded-lg text-white"
         >
-          Add
+          Update
         </button>
       </div>
     </div>
   );
 };
-export default AddTask;
+
+export default UpdateTask;

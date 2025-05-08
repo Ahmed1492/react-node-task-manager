@@ -1,0 +1,22 @@
+.editIcone {
+  position: absolute;
+  width: 33px;
+  /* height: 330px; */
+  right: 4px;
+  top: 5px;
+  cursor: pointer;
+  z-index: 99;
+}
+
+.menue {
+  position: absolute;
+  // background-color: red;
+  right: -22px;
+  top: 42px;
+  li:first-child{
+    // border-bottom: 1px solid gray ;
+    margin-top: 4px;
+  }
+
+
+}

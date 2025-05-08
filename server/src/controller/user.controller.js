@@ -1,6 +1,8 @@
 import User from "../../db/models/user.model.js";
 import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
+import jwt from "jsonwebtoken";
+
 // import { config } from "dotenv";
 // config();
 
@@ -59,11 +61,19 @@ export const login = async (req, res, next) => {
     }
 
     const checkPassword = await bcrypt.compare(password, user.password);
+    // Check Paswword
     if (!checkPassword) {
-      return res.status(200).json({ message: 'invaild email or password!' });
+      return res.status(400).json({ message: 'invaild email or password!' });
 
     }
-    return res.status(200).json({ message: 'user logedin successfully', user });
+    // Generate Token
+
+    const token = jwt.sign({ id: user._id, name: user.name, email: user.email }, process.env.TOKEN_SECRET_KEY, {
+      expiresIn: "1h",
+    });
+
+
+    return res.status(200).json({ message: 'user logedin successfully', token });
 
   } catch (error) {
     console.log(error);
