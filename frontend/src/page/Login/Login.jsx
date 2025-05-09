@@ -12,7 +12,7 @@ const Login = ({ onLogin }) => {
   });
 
   const [error, setError] = useState(null);
-  const [mode, setMode] = useState("register");
+  const [mode, setMode] = useState("login");
   const navigate = useNavigate();
 
   const collectDate = (e) => {
@@ -26,43 +26,88 @@ const Login = ({ onLogin }) => {
 
   const handleLogin = async () => {
     try {
+      if (!userLogin.email || !userLogin.password) {
+        return setError("All Fields Are Required!");
+      }
       const response = await axios.post(
         "http://localhost:2000/login",
         userLogin
       );
-      const { token } = response.data;
-      localStorage.setItem("userTasksToken", token);
+      console.log(response);
 
-      // Optional: update auth state in parent component
-      if (onLogin) onLogin();
+      if (response.status === 200) {
+        const { token } = response.data;
+        localStorage.setItem("userTasksToken", token);
+      }
 
-      // Redirect after login
-      navigate("/");
+      // Notify parent and redirect
+      if (onLogin) onLogin(); // This can set isAuthenticated = true
+      navigate("/"); // Go to home route (TaskBoard)
     } catch (error) {
       const message = error?.response?.data?.message || "Login failed";
+      console.log(error?.response?.data || "Login failed");
+
       setError(message);
-      console.error("Login error:", message);
     }
   };
 
   if (mode === "login")
     return (
-      <LoginComp
-        error={error}
-        collectDate={collectDate}
-        handleLogin={handleLogin}
-      />
+      <>
+        <div className="flex w-[10rem] justify-between m-auto text-white rounded-lg bg-[#FFD1C9] mt-3">
+          <span
+            onClick={() => setMode("login")}
+            className="cursor-pointer w-[50%] rounded-lg py-3 px-4 bg-[#FF735C] text-white"
+          >
+            Login
+          </span>
+          <span
+            onClick={() => setMode("register")}
+            className="cursor-pointer w-[50%] rounded-lg py-3 px-4  text-white"
+          >
+            Register
+          </span>
+        </div>
+
+        <LoginComp
+          error={error}
+          collectDate={collectDate}
+          handleLogin={handleLogin}
+        />
+      </>
     );
   if (mode === "register")
     return (
-      <RegisterComp
-        navigate={navigate}
-        // handleregister={handleregister}
-        // error={error}
-        // collectDate={collectDate}
-        // onLogin={onLogin}
-        setMode={setMode}
-      />
+      <>
+        <div className="flex w-[10rem] justify-between m-auto text-white rounded-lg bg-[#FFD1C9] mt-3">
+          <span
+            onClick={() => setMode("login")}
+            className={`cursor-pointer w-[50%] rounded-lg py-3 px-4 ${
+              mode === "login" && "bg-[#FF735C]"
+            }  text-white`}
+          >
+            Login
+          </span>
+          <span
+            onClick={() => setMode("register")}
+            className={`cursor-pointer w-[50%] ${
+              mode === "register" && "bg-[#FF735C]"
+            }  } rounded-lg py-3 px-4  text-white`}
+          >
+            Register
+          </span>
+        </div>
+        <RegisterComp
+          navigate={navigate}
+          // handleregister={handleregister}
+          // error={error}
+          // collectDate={collectDate}
+          // onLogin={onLogin}
+          error={error}
+          setError={setError}
+          setMode={setMode}
+        />
+      </>
     );
 };
 

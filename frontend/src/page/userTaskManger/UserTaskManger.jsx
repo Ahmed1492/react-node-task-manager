@@ -12,14 +12,19 @@ import axios from "axios";
 import UpdateTask from "../UpdateTask/UpdateTask";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
+import {} from "../../components/DecodeToken/DecodeToken";
+import ProtectedRoute from "../../components/ProtectedRoute/ProtectedRoute";
 
-const UserTaskManger = ({ checkLogin }) => {
+const UserTaskManger = () => {
   const [allTasks, setAllTasks] = useState([]);
 
   const getData = async (url) => {
     try {
       let myResponse = await axios.get(url);
-      console.log("response : ", myResponse.data.result);
+      console.log(
+        "response : ",
+        myResponse.data.result ? myResponse.data.result : myResponse.data
+      );
       setAllTasks(myResponse.data.result);
     } catch (error) {
       setAllTasks(error);
@@ -27,21 +32,23 @@ const UserTaskManger = ({ checkLogin }) => {
   };
 
   return (
-    <div className="flex mt-[4rem] ">
+    <div className="flex    px-2">
       <>
-        <div className="w-[55%] md:w-[40%] lg:w-[15rem]">
-          {checkLogin && <LeftBar />}
+        <div className="w-[55%]  md:w-[40%] mt-7 lg:w-[30%]  xl:w-[20%]">
+          <LeftBar />
         </div>
-        <div className=" w-[100%] lg:w-[80%] bg-white h-full px-3 mt-7 rounded-lg ">
+        <div className=" w-[100%] min-h-[93vh]   lg:w-[80%] bg-white h-full px-3 mt-7  ">
           <Routes>
             <Route
               path="/"
               element={
-                <TaskBoard
-                  getData={getData}
-                  allTasks={allTasks}
-                  setAllTasks={setAllTasks}
-                />
+                <ProtectedRoute>
+                  <TaskBoard
+                    getData={getData}
+                    allTasks={allTasks}
+                    setAllTasks={setAllTasks}
+                  />
+                </ProtectedRoute>
               }
             />
             <Route path="/addTask" element={<AddTask />} />

@@ -1,18 +1,36 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { userTokenId } from "../../components/DecodeToken/DecodeToken";
+import { jwtDecode } from "jwt-decode";
 
 const AddTask = () => {
+  const decodeToken = () => {
+    try {
+      let token = localStorage.getItem("userTasksToken");
+      if (token) {
+        const decoded = jwtDecode(token);
+        return decoded;
+      }
+    } catch (error) {
+      console.error("Invalid token:", error);
+      return null;
+    }
+  };
+
   const [task, setTask] = useState({
     title: "",
     content: "",
     type: "",
-    userId: "6819158080f39f9b75d3f7e3",
+    userId: decodeToken().id,
     startDate: "",
     endDate: "",
   });
+  const [error, setError] = useState(null);
+  const [response, setRespose] = useState("");
 
   const collectDate = (e) => {
     try {
+      setError(false);
       let key = e.target.name;
       let value = e.target.value;
       let newObj = { ...task };
@@ -26,91 +44,125 @@ const AddTask = () => {
 
   const createNewTask = async () => {
     try {
+      if (!task.title || !task.content || !task.type || !task.userId) {
+        return setError("All Fields Required");
+      }
       let myResponse = await axios.post("http://localhost:2000/task", task);
+      console.log("====================================");
+      console.log();
+      console.log("====================================");
+      if (myResponse.status === 201) {
+        setRespose(myResponse.data.message);
+      }
       console.log(myResponse);
     } catch (error) {
       console.log(error);
     }
   };
   return (
-    <div className="py-6 px-4">
-      <h2 className="text-2xl font-semibold text-center mb-6">Add New Task</h2>
+    <>
+      <div className="py-6 min-h-[94vh]  px-4">
+        <h2 className="text-2xl mt-[5rem] font-semibold text-center mb-6">
+          Add New Task
+        </h2>
 
-      <div className="flex flex-col gap-4 max-w-xl mx-auto">
-        {/* TITLE */}
-        <div>
-          <label className="block text-sm font-medium mb-1">Title</label>
-          <input
-            onChange={collectDate}
-            name="title"
-            className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
-            type="text"
-            placeholder="Task Title"
-          />
-        </div>
-        {/* content */}
-        <div>
-          <label className="block text-sm font-medium mb-1">Description</label>
-          <input
-            onChange={collectDate}
-            name="content"
-            className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
-            type="text"
-            placeholder="Task Description"
-          />
-        </div>
-        {/* DATE */}
-        <div className="flex gap-4">
-          <div className="flex-1">
-            <label className="block text-sm font-medium mb-1">Start Date</label>
-            <input
-              onChange={collectDate}
-              name="startDate"
-              className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
-              type="date"
-            />
-          </div>
-
-          <div className="flex-1">
-            <label className="block text-sm font-medium mb-1">End Date</label>
-            <input
-              onChange={collectDate}
-              name="endDate"
-              className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
-              type="date"
-            />
-          </div>
-        </div>
-        {/* STATUS */}
-        <div>
-          <label className="block text-sm font-medium mb-1">Status</label>
-          <select
-            onChange={collectDate}
-            name="type"
-            className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
-            defaultValue=""
+        {error && (
+          <div
+            className="  font-bold my-4
+                  text-red-600 text-lg text-center  rounded z-50"
           >
-            <option value="" disabled>
-              Select status
-            </option>
-            <option name="type" value="pending">
-              Pending
-            </option>
-            <option value="inprogress">In Progress</option>
-            <option value="completed">Completed</option>
-            <option value="deferred">Deferred</option>
-            <option value="deployed">Deployed</option>
-          </select>
-        </div>
+            {error}
+          </div>
+        )}
 
-        <button
-          onClick={createNewTask}
-          className="bg-[#FF735C] mt-5 py-2 rounded-lg text-white"
-        >
-          Add
-        </button>
+        {response && (
+          <div
+            className="  font-bold my-4
+                  text-green-600 text-lg text-center  rounded z-50"
+          >
+            {response}
+          </div>
+        )}
+        <div className="flex flex-col gap-4 max-w-xl mx-auto">
+          {/* TITLE */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Title</label>
+            <input
+              onChange={collectDate}
+              name="title"
+              className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
+              type="text"
+              placeholder="Task Title"
+            />
+          </div>
+          {/* content */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Description
+            </label>
+            <input
+              onChange={collectDate}
+              name="content"
+              className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
+              type="text"
+              placeholder="Task Description"
+            />
+          </div>
+          {/* DATE */}
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <label className="block text-sm font-medium mb-1">
+                Start Date
+              </label>
+              <input
+                onChange={collectDate}
+                name="startDate"
+                className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
+                type="date"
+              />
+            </div>
+
+            <div className="flex-1">
+              <label className="block text-sm font-medium mb-1">End Date</label>
+              <input
+                onChange={collectDate}
+                name="endDate"
+                className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
+                type="date"
+              />
+            </div>
+          </div>
+          {/* STATUS */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Status</label>
+            <select
+              onChange={collectDate}
+              name="type"
+              className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Select status
+              </option>
+              <option name="type" value="pending">
+                Pending
+              </option>
+              <option value="inprogress">In Progress</option>
+              <option value="completed">Completed</option>
+              <option value="deferred">Deferred</option>
+              <option value="deployed">Deployed</option>
+            </select>
+          </div>
+
+          <button
+            onClick={createNewTask}
+            className="bg-[#3F51B5] mt-5 py-2 rounded-lg text-white"
+          >
+            Add
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 export default AddTask;

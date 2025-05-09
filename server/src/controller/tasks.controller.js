@@ -50,7 +50,7 @@ export const getUserTasks = async (req, res, next) => {
     // Check if user exists
     const checkUser = await User.findById(userId);
     if (!checkUser) {
-      return res.status(404).json({ message: 'User not found!' });
+      return res.json({ message: 'User not found!' });
     }
 
     // Find tasks by userId
@@ -58,7 +58,7 @@ export const getUserTasks = async (req, res, next) => {
 
     // If no tasks found, return an empty array with a message
     if (tasks.length === 0) {
-      return res.status(404).json({ message: 'No tasks found for this user' });
+      return res.json({ message: 'No tasks found for this user' });
     }
 
     return res.status(200).json({ result: tasks });
@@ -78,7 +78,7 @@ export const getComUserTasks = async (req, res, next) => {
     // Check if user exists
     const checkUser = await User.findById(userId);
     if (!checkUser) {
-      return res.status(404).json({ message: 'User not found!' });
+      return res.json({ message: 'User not found!' });
     }
 
     // Find tasks by userId
@@ -86,7 +86,7 @@ export const getComUserTasks = async (req, res, next) => {
 
     // If no tasks found, return an empty array with a message
     if (tasks.length === 0) {
-      return res.status(404).json({ message: 'No tasks found for this user' });
+      return res.json({ message: 'No tasks found for this user' });
     }
 
     return res.status(200).json({ result: tasks });
@@ -105,7 +105,7 @@ export const getPendUserTasks = async (req, res, next) => {
     // Check if user exists
     const checkUser = await User.findById(userId);
     if (!checkUser) {
-      return res.status(404).json({ message: 'User not found!' });
+      return res.json({ message: 'User not found!' });
     }
 
     // Find tasks by userId
@@ -113,7 +113,7 @@ export const getPendUserTasks = async (req, res, next) => {
 
     // If no tasks found, return an empty array with a message
     if (tasks.length === 0) {
-      return res.status(404).json({ message: 'No tasks found for this user' });
+      return res.json({ message: 'No tasks found for this user' });
     }
 
     return res.status(200).json({ result: tasks });
@@ -132,7 +132,7 @@ export const getInProgUserTasks = async (req, res, next) => {
     // Check if user exists
     const checkUser = await User.findById(userId);
     if (!checkUser) {
-      return res.status(404).json({ message: 'User not found!' });
+      return res.json({ message: 'User not found!' });
     }
 
     // Find tasks by userId
@@ -140,7 +140,7 @@ export const getInProgUserTasks = async (req, res, next) => {
 
     // If no tasks found, return an empty array with a message
     if (tasks.length === 0) {
-      return res.status(404).json({ message: 'No tasks found for this user' });
+      return res.json({ message: 'No tasks found for this user' });
     }
 
     return res.status(200).json({ result: tasks });
@@ -159,7 +159,7 @@ export const getDeployedTasks = async (req, res, next) => {
     // Check if user exists
     const checkUser = await User.findById(userId);
     if (!checkUser) {
-      return res.status(404).json({ message: 'User not found!' });
+      return res.json({ message: 'User not found!' });
     }
 
     // Find tasks by userId
@@ -167,7 +167,7 @@ export const getDeployedTasks = async (req, res, next) => {
 
     // If no tasks found, return an empty array with a message
     if (tasks.length === 0) {
-      return res.status(404).json({ message: 'No tasks found for this user' });
+      return res.json({ message: 'No tasks found for this user' });
     }
 
     return res.status(200).json({ result: tasks });
@@ -186,7 +186,7 @@ export const getDefeUserTasks = async (req, res, next) => {
     // Check if user exists
     const checkUser = await User.findById(userId);
     if (!checkUser) {
-      return res.status(404).json({ message: 'User not found!' });
+      return res.json({ message: 'User not found!' });
     }
 
     // Find tasks by userId
@@ -222,7 +222,7 @@ export const updateTask = async (req, res, next) => {
     );
 
     if (!updatedTask) {
-      return res.status(404).json({ message: 'Task not found!' });
+      return res.json({ message: 'Task not found!' });
     }
 
     return res.status(200).json({ message: 'Task updated successfully', result: updatedTask });
@@ -239,7 +239,7 @@ export const deleteTask = async (req, res, next) => {
     const task = await Task.findByIdAndDelete(id);
 
     if (!task) {
-      return res.status(404).json({ message: 'Task not found!' });
+      return res.json({ message: 'Task not found!' });
     }
 
     return res.status(200).json({ message: 'Task deleted successfully', result: task });

@@ -24,8 +24,11 @@ const App = () => {
   }
 
   return (
-    <div className='w-[80%] m-auto shadow-2xl'>
-      <UserTaskManger checkLogin={checkLogin} />
+    <div className=' bg-slate-100'>
+
+      <div className='w-[87w] pe-10 px-10 m-auto shadsow-md'>
+        <UserTaskManger checkLogin={checkLogin} />
+      </div>
     </div>
   );
 };

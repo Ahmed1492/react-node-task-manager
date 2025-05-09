@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./TaskCard.scss";
 import { useNavigate } from "react-router-dom";
 import NoTasks from "../NoTasks/NoTasks";
@@ -8,8 +8,6 @@ const TaskCard = ({ allTasks, setAllTasks }) => {
     id: "",
     isOpen: false,
   });
-
-  const [updatedTask, setUpdatedTask] = useState({});
 
   const navigate = useNavigate();
   const getStatusColor = (task) => {
@@ -76,14 +74,15 @@ const TaskCard = ({ allTasks, setAllTasks }) => {
   };
   if (allTasks?.status == 404) return <NoTasks />;
   if (!allTasks) return <NoTasks />;
-  if (allTasks.length == 0) return <NoTasks />;
+  // if (allTasks.length == 0) return <NoTasks />;
+
   return (
-    <div className="w-full flex flex-wrap justify-between gap-4">
+    <div className="w-full flex flex-wrap py-4 px-[2rem] gap-y-[2rem] justify-around gap-4 ">
       {allTasks?.map((task, index) => (
         <div
           // onClick={() => console.log(task)}
           key={index}
-          className="flex relative  flex-col gap-4 w-[100%] lg:w-[44%] xl:w-[17rem] shadow-2xl  border p-3 rounded-xl "
+          className="flex relative shadow-2xl  flex-col gap-4 w-[100%] lg:w-[17rem] xl:w-[18rem]   p-4 rounded-2xl "
         >
           <img
             onClick={() => handleOpen(task)}
@@ -92,7 +91,7 @@ const TaskCard = ({ allTasks, setAllTasks }) => {
             alt=""
           />
           {isOpenMenue.id === task._id && (
-            <div className="menue shadow-2xl rounded-lg bg-white w-[7rem] text-center px-1 py-2">
+            <div className="menue shadow-2xl z-50 rounded-lg bg-white w-[7rem] text-center px-1 py-2">
               <ul className="flex flex-col ">
                 <li className="border-b pb-2 border-slate-300">
                   <button onClick={() => handleUpdate(task)}>Edit</button>
@@ -111,8 +110,9 @@ const TaskCard = ({ allTasks, setAllTasks }) => {
           {/* TOP */}
           <div
             className={` ${getStatusColor(task)} 
-            )}-300 h-[9rem] rounded-xl flex justify-center items-center`}
+            )}-300 h-[9rem] r mt-5 rounded-xl relative flex justify-center items-center`}
           >
+            <img className="absolute w-[19px]  right-3 top-3  " src="/quote.svg" alt="" />
             <h3
               className={`${getTextColor(task)} font-bold w-[80%] text-center`}
             >
@@ -124,7 +124,7 @@ const TaskCard = ({ allTasks, setAllTasks }) => {
             <p className="w-[90%] text-base text-slate-600 m-auto text-center">
               {task.content}
             </p>
-            <div className="flex items-center justify-between mt-[1rem]">
+            <div className="flex items-center justify-between mt-[2rem]">
               {/* START DATE */}
               <div className="flex flex-col gap-1">
                 <span className="font-bold">Start Date</span>
@@ -141,7 +141,7 @@ const TaskCard = ({ allTasks, setAllTasks }) => {
                 </span>
               </div>
             </div>
-            <div className="flex items-center justify-between mt-[1rem]">
+            <div className="flex items-center justify-between mt-[3rem]">
               <span className="text-sm text-slate-600">park roy</span>
               <span
                 className={`${getTextColor(task)} ${getStatusColor(

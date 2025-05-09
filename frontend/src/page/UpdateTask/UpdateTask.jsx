@@ -39,10 +39,10 @@ const UpdateTask = () => {
     if (!updatedTask) return navigate("/");
   }, []);
   return (
-    <div className="py-6 px-4">
-      <h2 className="text-2xl font-semibold text-center mb-6">Update Task</h2>
+    <div className="py-6 min-h-[94vh] px-4">
+      <h2 className="text-2xl mt-[5rem] font-semibold text-center mb-6">Update Task</h2>
 
-      <div className="flex flex-col gap-4 max-w-xl mx-auto">
+      <div className="flex flex-col  gap-4 max-w-xl mx-auto">
         {/* TITLE */}
         <div>
           <label className="block text-sm font-medium mb-1">Title</label>
