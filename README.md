@@ -39,5 +39,3 @@ A full-stack task management application built to help users track and manage th
 - **bcrypt** for password hashing
 - **CORS** & **dotenv**
 
-## 📦 Folder Structure (Client & Server Split)
-
