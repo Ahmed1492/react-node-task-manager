@@ -8,7 +8,7 @@ import cors from 'cors';
 config();
 const app = express();
 const port = 2000;
-app.use(cors()); // <-- This allows all origins (you can restrict later)
+app.use(cors()); 
 
 app.use(express.json());
 app.use(userRouter);

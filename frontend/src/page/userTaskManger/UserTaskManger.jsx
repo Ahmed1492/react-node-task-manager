@@ -51,65 +51,85 @@ const UserTaskManger = () => {
                 </ProtectedRoute>
               }
             />
-            <Route path="/addTask" element={<AddTask />} />
+            <Route
+              path="/addTask"
+              element={
+                <ProtectedRoute>
+                  {" "}
+                  <AddTask />{" "}
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/completedTasks"
               element={
-                <CompletedTasks
-                  getData={getData}
-                  setAllTasks={setAllTasks}
-                  allTasks={allTasks}
-                />
+                <ProtectedRoute>
+                  <CompletedTasks
+                    getData={getData}
+                    setAllTasks={setAllTasks}
+                    allTasks={allTasks}
+                  />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/deferredTasks"
               element={
-                <DeferredTasks
-                  getData={getData}
-                  setAllTasks={setAllTasks}
-                  allTasks={allTasks}
-                />
+                <ProtectedRoute>
+                  <DeferredTasks
+                    getData={getData}
+                    setAllTasks={setAllTasks}
+                    allTasks={allTasks}
+                  />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/deployedTasks"
               element={
-                <DeployedTasks
-                  getData={getData}
-                  setAllTasks={setAllTasks}
-                  allTasks={allTasks}
-                />
+                <ProtectedRoute>
+                  <DeployedTasks
+                    getData={getData}
+                    setAllTasks={setAllTasks}
+                    allTasks={allTasks}
+                  />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/inProgressTasks"
               element={
-                <InProgressTasks
-                  allTasks={allTasks}
-                  setAllTasks={setAllTasks}
-                  getData={getData}
-                />
+                <ProtectedRoute>
+                  <InProgressTasks
+                    allTasks={allTasks}
+                    setAllTasks={setAllTasks}
+                    getData={getData}
+                  />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/pendingTasks"
               element={
-                <PendingTasks
-                  getData={getData}
-                  setAllTasks={setAllTasks}
-                  allTasks={allTasks}
-                />
+                <ProtectedRoute>
+                  <PendingTasks
+                    getData={getData}
+                    setAllTasks={setAllTasks}
+                    allTasks={allTasks}
+                  />
+                </ProtectedRoute>
               }
             />
             <Route
               path="/updateTask"
               element={
-                <UpdateTask
-                  getData={getData}
-                  setAllTasks={setAllTasks}
-                  allTasks={allTasks}
-                />
+                <ProtectedRoute>
+                  <UpdateTask
+                    getData={getData}
+                    setAllTasks={setAllTasks}
+                    allTasks={allTasks}
+                  />
+                </ProtectedRoute>
               }
             />
             {/* <Route path="/register" element={<Register />} /> */}

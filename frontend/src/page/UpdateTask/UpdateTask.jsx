@@ -32,15 +32,14 @@ const UpdateTask = () => {
     }
   };
 
-  console.log("====================================");
-  console.log("updatedTask111111111111 ", updatedTask);
-  console.log("====================================");
   useEffect(() => {
     if (!updatedTask) return navigate("/");
   }, []);
   return (
     <div className="py-6 min-h-[94vh] px-4">
-      <h2 className="text-2xl mt-[5rem] font-semibold text-center mb-6">Update Task</h2>
+      <h2 className="text-2xl mt-[5rem] font-semibold text-center mb-6">
+        Update Task
+      </h2>
 
       <div className="flex flex-col  gap-4 max-w-xl mx-auto">
         {/* TITLE */}

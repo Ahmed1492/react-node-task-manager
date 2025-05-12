@@ -36,7 +36,7 @@ const AddTask = () => {
       let newObj = { ...task };
       newObj[key] = value;
       setTask(newObj);
-      console.log(newObj);
+      // console.log(newObj);
     } catch (error) {
       console.log(error);
     }
@@ -48,11 +48,17 @@ const AddTask = () => {
         return setError("All Fields Required");
       }
       let myResponse = await axios.post("http://localhost:2000/task", task);
-      console.log("====================================");
-      console.log();
-      console.log("====================================");
+
       if (myResponse.status === 201) {
         setRespose(myResponse.data.message);
+        setTask({
+          title: "",
+          content: "",
+          type: "",
+          userId: decodeToken().id,
+          startDate: "",
+          endDate: "",
+        });
       }
       console.log(myResponse);
     } catch (error) {
@@ -88,6 +94,7 @@ const AddTask = () => {
           <div>
             <label className="block text-sm font-medium mb-1">Title</label>
             <input
+              value={task.title}
               onChange={collectDate}
               name="title"
               className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
@@ -102,6 +109,7 @@ const AddTask = () => {
             </label>
             <input
               onChange={collectDate}
+              value={task.content}
               name="content"
               className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
               type="text"
@@ -115,6 +123,7 @@ const AddTask = () => {
                 Start Date
               </label>
               <input
+                value={task.startDate}
                 onChange={collectDate}
                 name="startDate"
                 className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"
@@ -125,6 +134,7 @@ const AddTask = () => {
             <div className="flex-1">
               <label className="block text-sm font-medium mb-1">End Date</label>
               <input
+                value={task.endDate}
                 onChange={collectDate}
                 name="endDate"
                 className="bg-slate-200 py-2 px-3 rounded-md text-sm w-full text-gray-700"

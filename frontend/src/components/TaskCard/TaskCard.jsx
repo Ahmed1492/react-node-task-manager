@@ -82,7 +82,7 @@ const TaskCard = ({ allTasks, setAllTasks }) => {
         <div
           // onClick={() => console.log(task)}
           key={index}
-          className="flex relative shadow-2xl  flex-col gap-4 w-[100%] lg:w-[17rem] xl:w-[18rem]   p-4 rounded-2xl "
+          className="flex relative shadow-2xl  flex-col gap-4 w-[100%] lg:w-[18rem] xl:w-[18rem]   p-4 rounded-2xl "
         >
           <img
             onClick={() => handleOpen(task)}
@@ -124,7 +124,7 @@ const TaskCard = ({ allTasks, setAllTasks }) => {
             <p className="w-[90%] text-base text-slate-600 m-auto text-center">
               {task.content}
             </p>
-            <div className="flex items-center justify-between mt-[2rem]">
+            <div className="flex items-center justify-between mt-[1rem]">
               {/* START DATE */}
               <div className="flex flex-col gap-1">
                 <span className="font-bold">Start Date</span>
@@ -141,7 +141,7 @@ const TaskCard = ({ allTasks, setAllTasks }) => {
                 </span>
               </div>
             </div>
-            <div className="flex items-center justify-between mt-[3rem]">
+            <div className="flex items-center justify-between mt-[2rem]">
               <span className="text-sm text-slate-600">park roy</span>
               <span
                 className={`${getTextColor(task)} ${getStatusColor(
